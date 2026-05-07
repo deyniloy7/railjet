@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '../models';
 import { AuthApiService } from './auth-api.service';
-import { catchError, exhaustMap, finalize, of, tap } from 'rxjs';
+import { catchError, finalize, lastValueFrom, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,17 +33,19 @@ export class AuthService {
     this._currentUser.set(null);
   }
 
-  restoreSession() {
+  restoreSession(): Promise<void> {
     this._isLoading.set(true);
-    this.authApi.restoreSession().pipe(
-      tap(response => {
-        this._currentUser.set(response.user);
-      }),
-      catchError((err) => {
-        console.error('Session restore failed', err);
-        return of(null);
-      }),
-      finalize(() =>  this._isLoading.set(false))
-    ).subscribe();
+    return lastValueFrom(
+      this.authApi.restoreSession().pipe(
+        tap(response => {
+          this._currentUser.set(response.user);
+        }),
+        catchError((err) => {
+          console.error('Session restore failed', err);
+          return of(null);
+        }),
+        finalize(() => this._isLoading.set(false))
+      )
+    ).then(() => void 0);
   }
 }
