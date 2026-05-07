@@ -10,3 +10,5 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'railjet';
 }
+
+// Root application shell - router outlet + navigation only
