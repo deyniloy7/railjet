@@ -8,14 +8,14 @@ import { catchError, finalize, lastValueFrom, of, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private authApi = inject(AuthApiService);
-
-  private _currentUser = signal<User | null>(null);
-  private _isLoading = signal<boolean>(false);
+  private readonly authApi = inject(AuthApiService);
+  private readonly _currentUser = signal<User | null>(null);
+  private readonly _isLoading = signal<boolean>(false);
 
   readonly currentUser = this._currentUser.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly isLoggedIn = computed(() => !!this._currentUser());
+  readonly isAdmin = computed(() => this.currentUser()?.role === 'admin')
   
   constructor() { }  
 
