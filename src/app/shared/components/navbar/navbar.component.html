@@ -1,0 +1,16 @@
+<nav>
+  <div class="logo"></div>
+  <div class="nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">Home</a>
+    <a routerLink="/search" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">Search</a>
+    <a routerLink="/my-trips" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">My Trips</a>
+  </div>
+  <div class="auth">
+    @if(isLoggedIn()) {
+        Hello, {{currentUser()?.name}}
+        <button (click)="logout()">Logout</button>
+    } @else {
+        <button (click)="login()">Login</button>
+    }
+  </div>
+</nav>
