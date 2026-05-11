@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })
