@@ -1,1 +1,61 @@
-<p>search works!</p>
+<div>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+        <label for="origin">Origin</label>
+        <input id="origin" type="text" formControlName="origin" />
+        @if(originCities().length) {
+        <ul>
+            @for(city of originCities(); track city) {
+            <li>{{city}}</li>
+            }
+        </ul>
+        }
+
+        <label for="destination">Destination</label>
+        <input id="destination" type="text" formControlName="destination" />
+        @if(destinationCities().length) {
+        <ul>
+            @for(city of destinationCities(); track city) {
+            <li>{{city}}</li>
+            }
+        </ul>
+        }
+
+        <label for="date">Date</label>
+        <input id="date" type="date" formControlName="date" />
+
+        <label for="number-of-passengers">Number of Passengers</label>
+        <input id="number-of-passengers" type="number" formControlName="numberOfPassengers" />
+
+        <label for="trip-type-one-way">One Way</label>
+        <input id="trip-type-one-way" type="radio" value="one-way" formControlName="tripType" />
+
+        <label for="trip-type-round-trip">Round Trip</label>
+        <input id="trip-type-round-trip" type="radio" value="round-trip" formControlName="tripType" />
+
+        @if (searchForm.hasError('sameSourceDestination')) {
+        <p>Origin and destination cannot be the same</p>
+        }
+
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+
+<div>
+    @defer (when isLoading() || results().length > 0) {
+    @if (isLoading()) {
+    <p>Searching for trips...</p>
+    } @else {
+    @for (trip of results(); track trip.id) {
+    <div>
+        <p>{{ trip.origin }} → {{ trip.destination }}</p>
+        <p>{{ trip.departureTime }}</p>
+        <p>{{ trip.price }}</p>
+        <button [routerLink]="['/booking', trip.id]">Book Now</button>
+    </div>
+    } @empty {
+    no trips found
+    }
+    }
+    }
+</div>
