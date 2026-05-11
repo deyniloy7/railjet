@@ -49,8 +49,9 @@
     @for (trip of results(); track trip.id) {
     <div>
         <p>{{ trip.origin }} → {{ trip.destination }}</p>
-        <p>{{ trip.departureTime }}</p>
-        <p>{{ trip.price }}</p>
+        <p>{{ trip.departureTime | date:'dd MMM yyyy, hh:mm a'}}</p>
+        <p>{{ trip.price | price}}</p>
+        <p>{{ trip.duration | duration }}</p>
         <button [routerLink]="['/booking', trip.id]">Book Now</button>
     </div>
     } @empty {

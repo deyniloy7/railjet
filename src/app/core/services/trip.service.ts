@@ -72,8 +72,8 @@ export class TripService {
     return of(
       this._trips.filter(
         (trip) =>
-          trip.origin === request.origin &&
-          trip.destination === request.destination,
+          trip.origin.toLowerCase() === request.origin.toLowerCase() &&
+          trip.destination.toLowerCase() === request.destination.toLowerCase(),
       ),
     );
   }

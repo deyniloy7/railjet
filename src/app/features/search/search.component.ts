@@ -12,10 +12,13 @@ import { sourceDestinationValidator } from '../../shared/validators/source-desti
 import { Trip, TripSearchRequest } from '../../core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, debounceTime, distinctUntilChanged, finalize, of, switchMap, tap } from 'rxjs';
+import { DurationPipe } from '../../shared/pipes/duration.pipe';
+import { PricePipe } from '../../shared/pipes/price.pipe';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-search',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, DurationPipe, PricePipe, DatePipe],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
