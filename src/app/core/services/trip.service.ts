@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Trip, TripSearchRequest } from '../models';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -76,5 +76,11 @@ export class TripService {
           trip.destination.toLowerCase() === request.destination.toLowerCase(),
       ),
     );
+  }
+
+  public getTripById(tripId: string): Observable<Trip> {
+    const trip = this._trips.find(trip => trip.id === tripId);
+    if(!trip) return throwError(() => new Error(`Trip ${tripId} not found`));
+    return of(trip);
   }
 }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { Trip } from '../../core/models';
 
 @Component({
   selector: 'app-booking',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './booking.component.scss'
 })
 export class BookingComponent {
-
+  trip = input.required<Trip>();
 }

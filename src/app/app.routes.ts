@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin.guard';
 import { authGuard } from './core/guards/auth.guard';
+import { tripResolver } from './core/resolvers/trip.resolver';
 
 export const routes: Routes = [
     {
@@ -24,7 +25,8 @@ export const routes: Routes = [
     {
         path: 'booking/:tripId',
         loadComponent: () => import('./features/booking/booking.component').then(m => m.BookingComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        resolve: { trip: tripResolver }
     },
     {
         path: 'checkout',
@@ -35,7 +37,7 @@ export const routes: Routes = [
         path: 'admin',
         loadComponent: () => import('./features/admin/admin.component').then(m => m.AdminComponent),
         canActivate: [authGuard],
-        canMatch: [adminGuard] // TODO: import authGuard, adminGuard once created
+        canMatch: [adminGuard],
     },
     {
         path: 'auth',
