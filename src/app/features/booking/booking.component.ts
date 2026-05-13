@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import { BusSeat, CreateBookingRequest, Trip } from '../../core/models';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PricePipe } from '../../shared/pipes/price.pipe';
 import { DurationPipe } from '../../shared/pipes/duration.pipe';
 import { BookingService } from '../../core/services/booking.service';
 import { AuthService } from '../../core/services/auth.service';
-import { TripService } from '../../core/services/trip.service';
 import { catchError, finalize, of, tap } from 'rxjs';
+import { SeatHighlightDirective } from "./directives/seat-highlight.directive";
 
 @Component({
   selector: 'app-booking',
-  imports: [RouterLink, DatePipe, PricePipe, DurationPipe],
+  imports: [DatePipe, PricePipe, DurationPipe, SeatHighlightDirective],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +21,6 @@ export class BookingComponent {
   private readonly _bookingService = inject(BookingService);
   private readonly _router = inject(Router);
   private readonly authService = inject(AuthService);
-  private readonly tripService = inject(TripService);
 
   public selectedSeats = linkedSignal<string[]>(() => {
     const _ = this.trip();
@@ -209,6 +208,10 @@ export class BookingComponent {
     },
   ]);
 
+  public selectedSeatDetails = computed(() => 
+    this.seats().filter(seat => this.selectedSeats().includes(seat.id))
+  )
+
   public seatRows = computed(() => {
     const rows = new Map<number, BusSeat[]>();
     this.seats().forEach(seat => {
@@ -229,7 +232,7 @@ export class BookingComponent {
   }
 
   public proceedToCheckout(): void {
-    if(this.selectedSeats().length === 0) return;
+    if (this.selectedSeats().length === 0) return;
 
     this.isLoading.set(true);
 
@@ -242,7 +245,7 @@ export class BookingComponent {
 
     this._bookingService.createBooking(createBookingRequest).pipe(
       tap(() => {
-            this._router.navigateByUrl("/checkout");
+        this._router.navigateByUrl("/checkout");
       }),
       catchError(err => {
         console.error("Booking creation error", err);
@@ -253,5 +256,10 @@ export class BookingComponent {
   }
 
 
-
+  public getSeatStatus(seat: BusSeat): 'available' | 'taken' | 'selected' {
+    if (this.selectedSeats().includes(seat.id)) {
+      return 'selected';
+    }
+    return 'available';
+  }
 }

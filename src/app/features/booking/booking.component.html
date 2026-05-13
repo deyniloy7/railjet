@@ -1,1 +1,36 @@
-<p>booking works!</p>
+<!-- Section 1 — Trip Summary -->
+<div>
+    <p>Origin: {{ trip().origin }} -> Destination: {{ trip().destination }}</p>
+    <p>Departure Date: {{ trip().departureTime | date:'dd MMM yyyy, hh:mm a' }}</p>
+    <p>Duration: {{ trip().duration | duration }}</p>
+    <p>Price: {{ trip().price | price}}</p>
+</div>
+
+<!-- Section 2 — Seat Map -->
+ @switch (trip().vehicleType) {
+    @case('bus') {
+        @for(row of seatRows(); track row) {
+            @for(seat of row; track seat.id) {
+                <div appSeatHighlight [status]="getSeatStatus(seat)" (click)="toggleSeat(seat.id)">
+                    {{ seat.seatNumber }}
+                </div>
+            }
+        }
+    }
+    @case('train') {
+        <p>Train layout coming soon</p>
+    }
+    @default {
+        <p>Unknown vehicle type</p>
+    }
+ }
+
+ <!-- Section 3 — Selected Seats -->
+  <p>Selected seats:</p>
+    @for(seat of selectedSeatDetails(); track seat.id) {
+        <p>{{ seat.seatNumber }}</p>
+    }
+
+
+  <!-- Section 4 — Button -->
+<button type="submit" [disabled]="selectedSeats().length === 0" (click)="proceedToCheckout()">Proceed to Checkout Page</button>
