@@ -4,6 +4,6 @@ export interface Booking {
     tripId: string;
     status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
     createdAt: Date;
-    expiresAt: string; // only relevant when status is 'pending'
+    expiresAt: Date; // only relevant when status is 'pending'
     ticketId: string;
 }

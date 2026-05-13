@@ -5,3 +5,4 @@ export * from './trip.model';
 export * from './trip-search-request.model';
 export * from './seat.model';
 export * from './seat-availability.model';
+export * from './create-booking-request.model';
