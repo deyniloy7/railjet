@@ -8,6 +8,7 @@ import { BookingService } from '../../core/services/booking.service';
 import { AuthService } from '../../core/services/auth.service';
 import { catchError, finalize, of, tap } from 'rxjs';
 import { SeatHighlightDirective } from "./directives/seat-highlight.directive";
+import { BookingStateService } from '../../core/services/booking-state.service';
 
 @Component({
   selector: 'app-booking',
@@ -21,6 +22,7 @@ export class BookingComponent {
   private readonly _bookingService = inject(BookingService);
   private readonly _router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly _bookingStateService = inject(BookingStateService);
 
   public selectedSeats = linkedSignal<string[]>(() => {
     const _ = this.trip();
@@ -245,6 +247,7 @@ export class BookingComponent {
 
     this._bookingService.createBooking(createBookingRequest).pipe(
       tap(() => {
+        this._bookingStateService.setBookingData( this.trip().id, this.selectedSeats());
         this._router.navigateByUrl("/checkout");
       }),
       catchError(err => {

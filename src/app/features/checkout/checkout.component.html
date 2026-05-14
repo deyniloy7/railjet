@@ -1,1 +1,32 @@
-<p>checkout works!</p>
+<div>
+    <div class="passenger-form">
+        <form [formGroup]="passengerForm">
+            Name: <input type="text" formControlName="name" />
+            Age: <input type="number" formControlName="age" />
+            Gender:
+            <input type="radio" formControlName="gender" value="male" /> Male
+            <input type="radio" formControlName="gender" value="female" /> Female
+
+            Email: <input type="email" formControlName="email" />
+            Phone Number: <input type="tel" formControlName="phoneNumber" />
+            ID type:
+            <input type="radio" formControlName="idType" value="aadhar"/> Aadhar
+            <input type="radio" formControlName="idType" value="voter"/> Voter
+            <input type="radio" formControlName="idType" value="pan"/> PAN
+
+            Id Number: <input type="text" formControlName="idNumber" />
+        </form>
+    </div>
+    <div class="payment-form">
+        <form [formGroup]="paymentForm">
+            Card Number: <input type="text" formControlName="cardNumber" />
+            cvv: <input type="text" formControlName="cvv" />
+            Expiry Date: <input type="date" formControlName="expiryDate" />
+            Name on Card: <input type="text" formControlName="nameOnCard" />
+
+
+            <button [disabled]="!isFormValid()" (click)="onSubmit()">Submit</button>
+        </form>
+    </div>
+
+</div>

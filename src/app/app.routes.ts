@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { tripResolver } from './core/resolvers/trip.resolver';
+import { checkoutGuard } from './core/guards/checkout.guard';
 
 export const routes: Routes = [
     {
@@ -31,7 +32,8 @@ export const routes: Routes = [
     {
         path: 'checkout',
         loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        canDeactivate: [checkoutGuard]
     },
     {
         path: 'admin',
